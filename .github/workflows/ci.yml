@@ -1,0 +1,26 @@
+name: CI - HTML validation
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  html-validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Download Nu HTML Validator
+        run: |
+          curl -L https://validator.github.io/validator/vnu.jar -o vnu.jar
+
+      - name: Validate HTML
+        run: java -jar vnu.jar --errors-only index.html
